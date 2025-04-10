@@ -33,7 +33,7 @@ def load_model():
         num_labels=2,
         ignore_mismatched_sizes=True
     )
-    state_dict = torch.load(model_path, map_location=torch.device("cpu"))
+    state_dict = torch.load(model_path, map_location=torch.device("cpu"), weights_only=False)
     model.load_state_dict(state_dict)
     model.eval()
     return model
