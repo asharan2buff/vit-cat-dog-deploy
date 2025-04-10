@@ -5,13 +5,40 @@ from PIL import Image
 from transformers import ViTForImageClassification
 import os
 import requests
+import gdown
+
+import gdown
+
+@st.cache_resource
+def load_model():
+    model_path = "vit_cats_dogs_model.pth"
+
+    # Google Drive File ID
+    file_id = "1K6QfhlEijduFu2EvlSZPcD7ma7eNZTX_"
+    url = f"https://drive.google.com/uc?id={file_id}"
+
+    if not os.path.exists(model_path):
+        with st.spinner("📥 Downloading model from Google Drive..."):
+            gdown.download(url, model_path, quiet=False)
+            st.success("✅ Model downloaded!")
+
+    model = ViTForImageClassification.from_pretrained(
+        "google/vit-base-patch16-224-in21k",
+        num_labels=2,
+        ignore_mismatched_sizes=True
+    )
+
+    state_dict = torch.load(model_path, map_location=torch.device("cpu"), weights_only=False)
+    model.load_state_dict(state_dict)
+    model.eval()
+    return model
+
+
 
 # Page setup
 st.set_page_config(page_title="Cat vs Dog Classifier", layout="centered")
 st.title("🐱 Cat vs 🐶 Dog Classifier (ViT)")
 
-import os
-import requests
 
 @st.cache_resource
 def load_model():
