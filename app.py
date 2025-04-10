@@ -8,7 +8,7 @@ import requests
 
 # Page setup
 st.set_page_config(page_title="Cat vs Dog Classifier", layout="centered")
-st.title("🐶🐱 Cat vs Dog Classifier (ViT)")
+st.title("🐱 Cat vs 🐶 Dog Classifier (ViT)")
 
 import os
 import requests
@@ -18,7 +18,7 @@ def load_model():
     model_path = "a2_bonus_vit_apurvara_asharan2.pth"
 
     # ✅ Replace this with your actual direct download link:
-    url = "https://buffalo.box.com/s/nto0vk4kixr5fbbmdwupggy5hxaigq57"
+    url = "https://drive.google.com/uc?export=download&id=1K6QfhlEijduFu2EvlSZPcD7ma7eNZTX_"
 
     # Download model if not already present
     if not os.path.exists(model_path):
