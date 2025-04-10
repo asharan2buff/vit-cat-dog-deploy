@@ -4,4 +4,5 @@ transformers
 streamlit
 pillow
 requests
+gdown
 
