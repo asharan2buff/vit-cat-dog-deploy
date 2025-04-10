@@ -1,4 +1,4 @@
 [server]
-port = 10000
+port = 9000
 enableCORS = false
 enableXsrfProtection = false
