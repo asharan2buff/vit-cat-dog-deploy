@@ -4,17 +4,23 @@ from torchvision import transforms
 from PIL import Image
 from transformers import ViTForImageClassification
 import os
-import requests
 import gdown
 
-import gdown
+# -------------------------------
+# Page setup
+# -------------------------------
+st.set_page_config(page_title="Cat vs Dog Classifier", layout="centered")
+st.title("🐱 Cat vs 🐶 Dog Classifier (ViT)")
 
+# -------------------------------
+# Load model with caching
+# -------------------------------
 @st.cache_resource
 def load_model():
-    model_path = "vit_cats_dogs_model.pth"
+    model_path = "a2_bonus_vit_apurvara_asharan2.pth"
 
-    # Google Drive File ID
-    file_id = "1K6QfhlEijduFu2EvlSZPcD7ma7eNZTX_"
+    # ✅ Your new Google Drive file link
+    file_id = "1sGwomfIM9PgTYLeXINf5Yh9fr81rVBss"
     url = f"https://drive.google.com/uc?id={file_id}"
 
     if not os.path.exists(model_path):
@@ -27,49 +33,17 @@ def load_model():
         num_labels=2,
         ignore_mismatched_sizes=True
     )
-
     state_dict = torch.load(model_path, map_location=torch.device("cpu"), weights_only=False)
     model.load_state_dict(state_dict)
     model.eval()
     return model
-
-
-
-# Page setup
-st.set_page_config(page_title="Cat vs Dog Classifier", layout="centered")
-st.title("🐱 Cat vs 🐶 Dog Classifier (ViT)")
-
-
-@st.cache_resource
-def load_model():
-    model_path = "a2_bonus_vit_apurvara_asharan2.pth"
-
-    # ✅ Replace this with your actual direct download link:
-    url = "https://drive.google.com/uc?export=download&id=1K6QfhlEijduFu2EvlSZPcD7ma7eNZTX_"
-
-    # Download model if not already present
-    if not os.path.exists(model_path):
-        with st.spinner("📥 Downloading model..."):
-            r = requests.get(url)
-            with open(model_path, "wb") as f:
-                f.write(r.content)
-            st.success("✅ Model downloaded")
-
-    model = ViTForImageClassification.from_pretrained(
-        "google/vit-base-patch16-224-in21k",
-        num_labels=2,
-        ignore_mismatched_sizes=True
-    )
-    state_dict = torch.load(model_path, map_location=torch.device("cpu"), weights_only=False)
-    model.load_state_dict(state_dict)
-    model.eval()
-    return model
-
 
 model = load_model()
-class_names = ['cat', 'dog']  # Ensure this matches your dataset order
+class_names = ['cat', 'dog']  # Adjust if needed based on your training
 
+# -------------------------------
 # File uploader
+# -------------------------------
 uploaded_file = st.file_uploader("Upload a cat or dog image 🐾", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
